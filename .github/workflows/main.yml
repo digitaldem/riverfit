@@ -1,4 +1,4 @@
-name: Dart Tests with Code Coverage
+name: Build Status
 
 on:
   push:
