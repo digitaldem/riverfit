@@ -25,7 +25,7 @@ void main() {
       expect(
         extensions,
         containsAll([
-          '.riverfit.riverpod.g.part',
+          'X.riverfit.riverpod.g.part',
           '.riverfit.retrofit.g.part',
         ]),
       );
