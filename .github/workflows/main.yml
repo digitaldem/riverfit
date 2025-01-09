@@ -29,7 +29,7 @@ jobs:
       - name: Run tests with code coverage enabled
         working-directory: riverfit_generator
         run: |
-          mkdir -p ./reports |
+          mkdir -p ./reports/coverage |
           dart test --coverage=./reports/coverage --reporter=json | 
           dart run junitreport:tojunit --output ./reports/junit.xml |
           dart run coverage:format_coverage --lcov --in=./reports/coverage --out=./reports/lcov.info --report-on=lib
