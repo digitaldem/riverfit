@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 jobs:
   annotation:
     name: Riverfit Annotation
