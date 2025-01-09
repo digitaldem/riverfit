@@ -65,6 +65,7 @@ jobs:
 
       - name: Set the job exit status
         run: |
+          echo "${{ job.status }}"
           if [[ "${{ job.status }}" == "failure" ]]; then
             exit 1
           else
