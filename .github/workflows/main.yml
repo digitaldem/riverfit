@@ -12,9 +12,13 @@ env:
   JOB_STATUS: success
 
 jobs:
-  test:
+  build:
+    name: Test and Coverage
     runs-on: ubuntu-latest
     steps:
+      - name: Install tools from APT
+        run: sudo apt-get install -y lcov
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -42,7 +46,7 @@ jobs:
           fi
 
       - name: Upload test results to GitHub
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: ./riverfit_generator/reports/junit.xml
@@ -54,7 +58,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload code coverage to GitHub
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage
           path: ./riverfit_generator/reports/lcov.info
