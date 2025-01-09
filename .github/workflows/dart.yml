@@ -1,0 +1,81 @@
+name: dart
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: "The directory to run the task in"
+        required: true
+        type: string
+
+env:
+  TEST_STATUS: success
+
+jobs:
+  task:
+    name: Test and Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install tools from APT
+        run: sudo apt-get install -y lcov
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.working-directory }}
+        run: dart pub get
+
+      - name: Generate Mockito mocks with build_runner
+        working-directory: ${{ inputs.working-directory }}
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run tests with code coverage enabled
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          mkdir -p ./reports/coverage
+          dart test --coverage=./reports/coverage --reporter=json | dart run junitreport:tojunit --output ./reports/junit.xml
+          if echo ${PIPESTATUS[@]:-${pipestatus[@]}} | grep -q '[^0[:space:]]'; then
+            echo "Test failure(s) detected"
+            echo "TEST_STATUS=failure" >> $GITHUB_ENV
+          fi
+          dart run coverage:format_coverage --lcov --in=./reports/coverage --out=./reports/lcov.info --report-on=lib
+
+      - name: Upload test results to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.working-directory }}-test_results
+          path: ${{ inputs.working-directory }}/reports/junit.xml
+          if-no-files-found: error
+
+      - name: Upload code coverage to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.working-directory }}-code_coverage
+          path: ${{ inputs.working-directory }}/reports/lcov.info
+          if-no-files-found: error
+  
+      - name: Upload test results to Codecov
+        uses: codecov/test-results-action@v1
+        with:
+          files: ${{ inputs.working-directory }}/reports/junit.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+  
+      - name: Upload code coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: ${{ inputs.working-directory }}/reports/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+
+      - name: Return the task status
+        run: |
+          if [ "$TEST_STATUS" = "failure" ]; then
+            exit 1
+          else
+            exit 0
+          fi

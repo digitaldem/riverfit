@@ -2,6 +2,8 @@
 /// Use `build_runner` to generate your riverfit-compatible code.
 library riverfit_annotation;
 
+import 'src/annotation.dart';
+
 // Re-export riverpod and riverpod_annotation as a convenience
 export 'package:riverpod_annotation/riverpod_annotation.dart'
     show
@@ -22,4 +24,5 @@ export 'package:riverpod_annotation/riverpod_annotation.dart'
         AutoDisposeStreamNotifier,
         AutoDisposeStreamNotifierProvider;
 
-export './src/annotation.dart';
+typedef Riverfit = RiverfitAnnotation;
+const riverfit = RiverfitAnnotation();
