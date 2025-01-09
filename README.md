@@ -1,8 +1,8 @@
 # Riverfit
 
-![Riverfit](https://github.com/digitaldem/riverfit/actions/workflows/main.yml/badge.svg)
+[![Build Status](https://github.com/digitaldem/riverfit/actions/workflows/main.yml/badge.svg)]
 [![Codecov](https://codecov.io/gh/digitaldem/riverfit/graph/badge.svg?token=BIMM16FVQ6)](https://codecov.io/gh/digitaldem/riverfit)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 
 
 ## Overview
