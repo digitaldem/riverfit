@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  JOB_STATUS: success
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -35,9 +38,8 @@ jobs:
           dart run coverage:format_coverage --lcov --in=./reports/coverage --out=./reports/lcov.info --report-on=lib
           if echo ${PIPESTATUS[@]:-${pipestatus[@]}} | grep -q '[^0[:space:]]'; then
             echo "Test failure detected"
-            exit 1
+            echo "JOB_STATUS=failed" >> $GITHUB_ENV
           fi
-        continue-on-error: true
 
       - name: Upload test results to GitHub
         uses: actions/upload-artifact@v3
@@ -65,8 +67,7 @@ jobs:
 
       - name: Set the job exit status
         run: |
-          echo "${{ job.status }}"
-          if [[ "${{ job.status }}" == "failure" ]]; then
+          if [ "$JOB_STATUS" = "failed" ]; then
             exit 1
           else
             exit 0
