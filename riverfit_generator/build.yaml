@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      riverfit_generator:
+        enabled: true
+
+builders:
+  riverfit_generator:
+    import: "package:riverfit_generator/src/builder.dart"
+    builder_factories: ["riverfitBuilder"]
+    build_extensions: {".dart": [".riverfit.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
