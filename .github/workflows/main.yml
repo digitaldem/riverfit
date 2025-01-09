@@ -39,13 +39,14 @@ jobs:
           mkdir -p ./reports/coverage |
           dart test --coverage=./reports/coverage --reporter=json | 
           dart run junitreport:tojunit --output ./reports/junit.xml |
-          dart run coverage:format_coverage --lcov --in=./reports/coverage --out=./reports/lcov.info --report-on=lib
+          dart run coverage:format_coverage --lcov --in=./reports/coverage/ --out=./reports/lcov.info --report-on=lib
           if echo ${PIPESTATUS[@]:-${pipestatus[@]}} | grep -q '[^0[:space:]]'; then
             echo "Test failure(s) detected"
             echo "JOB_STATUS=failed" >> $GITHUB_ENV
           fi
 
-          ls -la ./reports/coverage
+          ls -la ./reports
+          ls -la ./reports/coverage/test/src
           cat ./reports/lcov.info
           
 
