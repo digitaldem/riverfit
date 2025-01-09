@@ -37,7 +37,7 @@ jobs:
           dart run junitreport:tojunit --output ./reports/junit.xml |
           dart run coverage:format_coverage --lcov --in=./reports/coverage --out=./reports/lcov.info --report-on=lib
           if echo ${PIPESTATUS[@]:-${pipestatus[@]}} | grep -q '[^0[:space:]]'; then
-            echo "Test failure detected"
+            echo "Test failure(s) detected"
             echo "JOB_STATUS=failed" >> $GITHUB_ENV
           fi
 
@@ -65,8 +65,9 @@ jobs:
           files: ./riverfit_generator/reports/lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Set the job exit status
+      - name: Return the job status
         run: |
+          echo $JOB_STATUS
           if [ "$JOB_STATUS" = "failed" ]; then
             exit 1
           else
