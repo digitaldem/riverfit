@@ -49,14 +49,14 @@ jobs:
         with:
           name: test-results
           path: ./riverfit_generator/reports/junit.xml
-          if-no-files-found: fail
+          if-no-files-found: error
 
       - name: Upload code coverage to GitHub
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage
           path: ./riverfit_generator/reports/lcov.info
-          if-no-files-found: fail
+          if-no-files-found: error
   
       - name: Upload test results to Codecov
         uses: codecov/test-results-action@v1
