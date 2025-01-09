@@ -8,18 +8,21 @@ on:
     branches:
       - main
 
-env:
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 jobs:
   annotation:
     name: Riverfit Annotation
     uses: ./.github/workflows/dart.yml
+    secrets:
+      codecov-token: ${{ secrets.CODECOV_TOKEN }}
     with:
       working-directory: riverfit_annotation
 
   generator:
     name: Riverfit Generator
     uses: ./.github/workflows/dart.yml
+    secrets:
+      codecov-token: ${{ secrets.CODECOV_TOKEN }}
     with:
       working-directory: riverfit_generator
+  

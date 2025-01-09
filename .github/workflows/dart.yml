@@ -2,6 +2,11 @@ name: dart
 
 on:
   workflow_call:
+    secrets:
+      codecov-token:
+        description: "The upload token for Codecov"
+        required: true
+
     inputs:
       working-directory:
         description: "The directory to run the task in"
@@ -62,14 +67,14 @@ jobs:
         uses: codecov/test-results-action@v1
         with:
           files: ${{ inputs.working-directory }}/reports/junit.xml
-          token: ${{ env.CODECOV_TOKEN }}
+          token: ${{ secrets.codecov-token }}
           fail_ci_if_error: true
   
       - name: Upload code coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
           files: ${{ inputs.working-directory }}/reports/lcov.info
-          token: ${{ env.CODECOV_TOKEN }}
+          token: ${{ secrets.codecov-token }}
           fail_ci_if_error: true
 
       - name: Return the task status
