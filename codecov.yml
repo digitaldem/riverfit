@@ -7,3 +7,17 @@ coverage:
     patch:
       default:
         target: 95%
+
+comment:
+  layout: "header, diff, flags, components"
+
+component_management:
+  individual_components:
+    - component_id: riverfit_annotation
+      name: riverfit_annotation
+      paths:
+        - riverfit_annotation/**
+    - component_id: riverfit_generator
+      name: riverfit_generator
+      paths:
+        - riverfit_generator/**

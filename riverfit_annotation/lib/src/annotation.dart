@@ -4,7 +4,7 @@ import 'package:meta/meta_meta.dart';
 /// Annotation to mark classes for Riverfit processing.
 @Target({TargetKind.classType})
 @sealed
-class Riverfit {
+class RiverfitAnnotation {
   /// Whether the state of the provider should be maintained if it is no-longer used.
   ///
   /// Defaults to false.
@@ -16,10 +16,8 @@ class Riverfit {
   /// not the generated providers themselves.
   final List<Object>? dependencies;
 
-  const Riverfit({
+  const RiverfitAnnotation({
     this.keepAlive = false,
     this.dependencies,
   });
 }
-
-const riverfit = Riverfit();

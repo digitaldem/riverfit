@@ -8,71 +8,21 @@ on:
     branches:
       - main
 
-env:
-  JOB_STATUS: success
 
 jobs:
-  build:
-    name: Test and Coverage
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install tools from APT
-        run: sudo apt-get install -y lcov
+  annotation:
+    name: Riverfit Annotation
+    uses: ./.github/workflows/dart.yml
+    secrets:
+      codecov-token: ${{ secrets.CODECOV_TOKEN }}
+    with:
+      working-directory: riverfit_annotation
 
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Dart
-        uses: dart-lang/setup-dart@v1
-
-      - name: Install dependencies
-        working-directory: riverfit_generator
-        run: dart pub get
-
-      - name: Generate Mockito mocks with build_runner
-        working-directory: riverfit_generator
-        run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Run tests with code coverage enabled
-        working-directory: riverfit_generator
-        run: |
-          mkdir -p ./reports/coverage
-          dart test --coverage=./reports/coverage --reporter=json | dart run junitreport:tojunit --output ./reports/junit.xml
-          if echo ${PIPESTATUS[@]:-${pipestatus[@]}} | grep -q '[^0[:space:]]'; then
-            echo "Test failure(s) detected"
-            echo "JOB_STATUS=failed" >> $GITHUB_ENV
-          fi
-          dart run coverage:format_coverage --lcov --in=./reports/coverage --out=./reports/lcov.info --report-on=lib
-
-      - name: Upload test results to GitHub
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: ./riverfit_generator/reports/junit.xml
-
-      - name: Upload test results to Codecov
-        uses: codecov/test-results-action@v1
-        with:
-          files: ./riverfit_generator/reports/junit.xml
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Upload code coverage to GitHub
-        uses: actions/upload-artifact@v4
-        with:
-          name: code-coverage
-          path: ./riverfit_generator/reports/lcov.info
+  generator:
+    name: Riverfit Generator
+    uses: ./.github/workflows/dart.yml
+    secrets:
+      codecov-token: ${{ secrets.CODECOV_TOKEN }}
+    with:
+      working-directory: riverfit_generator
   
-      - name: Upload code coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          files: ./riverfit_generator/reports/lcov.info
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Return the job status
-        run: |
-          echo $JOB_STATUS
-          if [ "$JOB_STATUS" = "failed" ]; then
-            exit 1
-          else
-            exit 0
-          fi
