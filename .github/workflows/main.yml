@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  JOB_STATUS: success
+  TEST_STATUS: success
 
 jobs:
   build:
@@ -40,7 +40,7 @@ jobs:
           dart test --coverage=./reports/coverage --reporter=json | dart run junitreport:tojunit --output ./reports/junit.xml
           if echo ${PIPESTATUS[@]:-${pipestatus[@]}} | grep -q '[^0[:space:]]'; then
             echo "Test failure(s) detected"
-            echo "JOB_STATUS=failed" >> $GITHUB_ENV
+            echo "TEST_STATUS=failure" >> $GITHUB_ENV
           fi
           dart run coverage:format_coverage --lcov --in=./reports/coverage --out=./reports/lcov.info --report-on=lib
 
@@ -69,10 +69,16 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Return the job status
+        env:
+          JOB_STATUS: ${{ job.status }}      
         run: |
           echo $JOB_STATUS
-          if [ "$JOB_STATUS" = "failed" ]; then
-            exit 1
-          else
-            exit 0
-          fi
+          echo $TEST_STATUS
+          case "failure" in
+            "$JOB_STATUS" | "$TEST_STATUS")
+              exit 1
+              ;;
+            *)
+              exit 0
+              ;;
+          esac
