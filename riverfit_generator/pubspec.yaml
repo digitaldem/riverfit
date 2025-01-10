@@ -1,9 +1,17 @@
 name: riverfit_generator
-description: A code generation library that bridges the gap between riverpod_generator and retrofit_generator for Flutter projects.
+description: A code generation library that bridges the gap between riverpod_generator and retrofit_generator.
 version: 1.0.0
-publish_to: none
+publish_to: https://pub.dev
 homepage: https://github.com/digitaldem/riverfit
 repository: https://github.com/digitaldem/riverfit
+documentation: https://github.com/digitaldem/riverfit/blob/main/README.md
+issue_tracker: https://github.com/digitaldem/riverfit/issues
+license: MIT
+topics:
+  - code-generation
+  - riverpod
+  - retrofit
+
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
@@ -15,9 +23,7 @@ dependencies:
   riverpod_annotation: ^2.6.0 
   riverpod_generator: ^2.6.0
   source_gen: ^1.5.0
-
-  riverfit_annotation:
-    path: ../riverfit_annotation
+  riverfit_annotation: ^1.0.0
 
 dev_dependencies:
   build_runner: ^2.4.0
@@ -25,9 +31,3 @@ dev_dependencies:
   junitreport: ^2.0.0 
   mockito: ^5.4.0
   test: ^1.25.0
-
-topics:
-  - code-generation
-  - riverpod
-  - retrofit
-  - flutter
