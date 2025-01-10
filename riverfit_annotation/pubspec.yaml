@@ -1,9 +1,19 @@
 name: riverfit_annotation
-description: Annotation library for Riverfit.
+description: Annotation library for Riverfit (riverfit_generator).
 version: 1.0.0
-publish_to: none
+publish_to: https://pub.dev
+homepage: https://github.com/digitaldem/riverfit
+repository: https://github.com/digitaldem/riverfit
+documentation: https://github.com/digitaldem/riverfit/blob/main/README.md
+issue_tracker: https://github.com/digitaldem/riverfit/issues
+license: MIT
+topics:
+  - code-generation
+  - riverpod
+  - retrofit
+
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
   
 dependencies:
   meta: ^1.15.0
